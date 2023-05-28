@@ -1,6 +1,6 @@
 # Zumabot
 
-## Zumabot is a JavaScript powered embeddable bot with full customization in mind, that powers business to client query resolution
+### Zumabot is a JavaScript powered embeddable bot with full customization in mind, that powers business to client query resolution
 
 - Installation:
 -- via npm npm install zuma

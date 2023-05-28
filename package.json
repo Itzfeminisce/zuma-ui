@@ -1,8 +1,9 @@
 {
-  "name": "zumabot",
-  "version": "1.1.0",
+  "name": "zuma-ui",
+  "version": "1.1.2-patch",
+  "type":"module",
   "description": "A JavaScript powered embeddable chatbot for business - customer interaction",
-  "main": "main.js",
+  "main": "./output/main.js",
   "scripts": {
     "build": "webpack --watch"
   },
@@ -12,7 +13,6 @@
   },
   "keywords": [
     "bot",
-    "ai",
     "zumabot",
     "embeddable-chatbot"
   ],
@@ -23,7 +23,11 @@
   },
   "homepage": "https://github.com/Itzfeminisce/embeddable-chatbot#readme",
   "devDependencies": {
+    "@rollup/plugin-image": "^3.0.2",
     "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1"
+  },
+  "dependencies": {
+    "rollup": "^3.23.0"
   }
 }

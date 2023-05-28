@@ -1,5 +1,7 @@
 .yarn
-dist
+src
 .pnp-cjs
 .pnp.loader.mjs
-index.html
+*.html
+webpack.*
+*.lock
