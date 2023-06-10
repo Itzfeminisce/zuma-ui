@@ -31,24 +31,23 @@ const EnquiryForm = function ({ frame, context }) {
   form.setCss("rounded-md m-auto block p-5");
 
   username.inputEl.setCss(
-    "p-5 text-black bg-slate-300/20 border-none rounded-full outline-none mx-auto w-full text-lg placeholder:text-slate-400 placeholder:font-bold placeholder:pl-2 placeholder:uppercase placeholder:text-sm"
+    "p-5 text-black !bg-slate-300/20 border-none rounded-full outline-none mx-auto w-full text-lg placeholder:text-slate-400 placeholder:font-bold placeholder:pl-2 placeholder:uppercase placeholder:text-sm"
   );
   username.errorField.setCss("mb-5 py-px text-orange-400 text-xs text-center");
 
   password.inputEl.setCss(
-    "p-5 text-black bg-slate-300/20 border-none rounded-full outline-none mx-auto w-full text-lg placeholder:text-slate-400 placeholder:font-bold placeholder:pl-2 placeholder:uppercase placeholder:text-sm mb-4"
+    "p-5 text-black !bg-slate-300/20 border-none rounded-full outline-none mx-auto w-full text-lg placeholder:text-slate-400 placeholder:font-bold placeholder:pl-2 placeholder:uppercase placeholder:text-sm mb-4"
   );
   // password.errorField.setCss("mb-5 py-px text-orange-600/30 text-xs")
 
   description.inputEl.setCss(
-    "p-5 text-black bg-slate-300/20 border-none rounded-lg outline-none mx-auto w-full text-lg placeholder:text-slate-400 placeholder:font-bold placeholder:pl-2 placeholder:uppercase placeholder:text-sm"
+    "p-5 text-black !bg-slate-300/20 border-none rounded-lg outline-none mx-auto w-full text-lg placeholder:text-slate-400 placeholder:font-bold placeholder:pl-2 placeholder:uppercase placeholder:text-sm"
   );
   //username.errorField.setCss("mb-5 py-px text-orange-600/30 text-xs")
 
   submitButton.setCss(
-    `p-3 text-slate-500 uppercase bg-black/10 border-none rounded-full outline-none mt-10 mx-auto w-full shadow-lg font-bold`
+    `p-3 text-slate-500 uppercase !bg-black/10 border-none rounded-full outline-none mt-10 mx-auto w-full shadow-lg font-bold`
   );
-
   handleLoginFormSubmit(async (formData, e) => {
     e.preventDefault();
 if(!(formData.get("fullname").trim())) return (username.errorField.innerHTML = "<b>This field is important</b>")
@@ -59,7 +58,7 @@ if(!(formData.get("fullname").trim())) return (username.errorField.innerHTML = "
     Activity.manager.destroy(Activity.prev);
     //, 1000);
   });
-  context.removeFooter();
+ // context.removeFooter();
   return form;
 };
 

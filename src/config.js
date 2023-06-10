@@ -1,7 +1,9 @@
 "use strict";
-
+import {prefix} from "../tailwind.config.js"
+ const appPrefix =  prefix || ""
+ 
 const config = {
-  prefix: "embeddable",
+  prefix:appPrefix,
   animation: "animate__fadeIn",
   appName: "Zuma",
   file: "zuma.config.js",
@@ -24,13 +26,13 @@ const config = {
    * @prop light Array<String>
    **/
   theme: {
-    dark: ["bg-slate-700", "text-white"],
+    dark: [`${prefix}bg-slate-700`, `${prefix}text-white`],
     
     /**
      * Passing tailwindcss gradient colors will kill your app and make it slow as hell. 
      * theme.*: ["bg-gradient-to-b","from-transparent","via-slate-200","to-slate-300", text-black"],
      * */
-   light: ["bg-white","text-black"],
+   light: [`${prefix}bg-white`,`${prefix}text-black`],
   },
   /*colors: {
     appBgColor: "slate-700",

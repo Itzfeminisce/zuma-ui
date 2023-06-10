@@ -51,6 +51,3 @@ pre, code {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
-input,button,textarea, select {
-  @extends outline-none;
-}

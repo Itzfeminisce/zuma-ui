@@ -18,7 +18,7 @@ export const fetchTailwind = function () {
       
     link.className = "dependency";
     link.async = false;
-    document.body.appendChild(link);
+   // document.body.appendChild(link);
     res(link);
   });
 };

@@ -1,73 +1,37 @@
 "use strict";
+import { format } from "date-fns";
 import Intent from "../lib/Intent.js";
 
 //let config = JSON.parse(window.localStorage.getItem("clientConfig"))
 //import config from "../config.js";
 import BgImage from "../files/bg.png";
-import { createNode } from "../lib/common.js";
+import { createNode, writeStatus } from "../lib/common.js";
 import { color } from "../lib/utils.js";
 
 const Index = function ({ frame, context, data }) {
-// let messageTracker = {index:0};
-//console.log(context )
- const BOT = [
-  {
-    id:9999999999,
-    title:"Whats the plan today?",
-    suggests:[
-      "Read Docs",
-      "Test App",
-      "Get CDN",
-      "Generate Starter app",
-      "See more",
-      "Just chilling 😇",
-      ]
-  },
-  {
-    id:0,
-    title:"Great choice! A better way of understanding any project is by taking a glance at the documentations. However, the choice is yours.",
-    suggests:[
-      "Get Started",
-      "APIs",
-      "Configuration File",
-      "What is Intent?",
-      "Quit",
-      ]
-  },
-  {
-    id:6,
-    title:"Our app is designed with full customisation in mind. You should started by appending our CDN into your page and see the magic",
-    suggests:["Get CDN","Generate Starter Kit","Return"]
-  }
-  ]
-const BOT_SUGGESTS = BOT.map(bot=>bot.suggests).flat(Infinity)
+  const BOT = context?.config?.CHATS;
+  const BOT_SUGGESTS = BOT.map((b) => b.suggests || []);
 
 
-  frame.setCss("z-2 !bg-white user-select-none");
+  frame.setCss("z-2 user-select-none");
 
-  //console.log(context.config)
-  const showcase = frame.nextNode(null, "div");
+  const showcase = frame.nextNode();
   showcase.setCss(
-    "h-full w-full flex flex-col justify-around items-center bg-transparent"
+    "h-full w-full flex flex-col justify-around items-center bg-transparent-"
   );
 
-  const container = showcase.nextNode(null, "div");
+  const container = showcase.nextNode();
   container.setCss(
-    "flex flex-col justify-center items-center py-5 w-full h-full flex flex-col justify-between bg-transparent"
+    "flex flex-col justify-center items-center py-5 w-full h-full flex flex-col justify-between bg-transparent-"
   );
 
   const msgArea = container.nextNode();
-  msgArea.setCss("max-h-[90%] w-[100%] bg-transparent overflow-y-auto");
+  msgArea.setCss("max-h-[90%] w-[100%] bg-transparent- overflow-y-auto scrollbar-none");
 
- 
- /* useMessage({ msgArea, type: "client", message: "Itzfeminisce" });
-  useMessage({
-    msgArea,
-    message: "Okay Itzfeminisce, How can i help you today?",
-  });
-*/
   const formContainer = container.nextNode();
   const sgg = formContainer.nextNode();
+  const computer = writeStatus(sgg);
+
   const {
     form,
     inputs: [ticket, message],
@@ -91,164 +55,171 @@ const BOT_SUGGESTS = BOT.map(bot=>bot.suggests).flat(Infinity)
     true
   );
 
-  sgg.setCss("bg-transparent py-2");
-  useMessage({ msgArea, suggestionArea:sgg });
+  sgg.setCss("bg-transparent- py-2");
+  useMessage({ msgArea, suggestionArea: sgg });
 
-/*
-  useMessage({ msgArea: sgg, message: "Hello!", type: "suggest" });
-  useMessage({ msgArea: sgg, message: "That's Awesome!", type: "suggest" });
-  useMessage({ msgArea: sgg, message: "👏", type: "suggest" });
-*/
+  formContainer.setCss("sticky bottom-0 mx-auto inset-x-0 bg-transparent-");
 
-  formContainer.setCss("sticky bottom-0 mx-auto inset-x-0 bg-transparent");
-
-  form.setCss("flex justify-between items-center bg-transparent");
-  ticket.inputEl.setCss("fa fa-plus p-3 text-slate-500 font-bold rounded-full");
+  form.setCss("flex justify-between items-center bg-transparent-");
+  ticket.inputEl.setCss("fa fa-plus p-3 text-slate-500 bg-slate-200 font-bold rounded-full");
   message.inputEl.setCss(
-    "bg-slate-100 rounded-full border-0 p-3 shadow-sm placeholder:text-black/70 mx-1"
+    "outline-none !bg-slate-300/20 !text-black text-shadow-white rounded-full border-0 p-3 shadow-sm placeholder:text-black/70 mx-1"
   );
+  submitButton.disabled = true;
   submitButton.textContent = "";
   submitButton.setCss(
     "fa fa-paper-plane !bg-blue-500 text-white rounded-full p-3"
   );
-
   ticket.inputEl.addEventListener("click", handlePickAttachment);
+  message.inputEl.addEventListener("keyup", (e) => {
+    if (e.target.value?.trim()?.length > 0) {
+      submitButton.disabled = false;
+    } else {
+      submitButton.disabled = true;
+    }
+  });
 
-// The furst time submitting a message
-handleBeginMessage((data,e) => {
-    //useMessage({ msgArea, message: data.get("message"), type: "client" });
-   handleMessage(data)
-   e.target.reset()
-   // e.target.form.reset()
-   sgg.nextNode(`${context?.config.appName} is typing...`).setCss("!bg-transparent font-small text-green-500 m-px")
- setTimeout(()=>{
-   getSuggestedMessageAndResponses(BOT,9999999999,msgArea,sgg,useMessage)
- }
-    ,2500)
-   });
-   
-   
+  // The furst time submitting a message
+  handleBeginMessage((data, e) => {
+    handleMessage(data);
+
+    /*   sgg
+      .nextNode(`${context?.config.appName} is typing...`)
+      .setCss("--bg-transparent- font-small text-green-500 m-px");
+      */
+    // const doneTyping =  isTyping(sgg.nextNode("","span").setCss("text-lg text-green-500 px-px")
+    computer.isTyping();
+    setTimeout(() => {
+      getSuggestedMessageAndResponses(BOT, -1, msgArea, sgg, useMessage);
+      // computer.doneTyping()
+    }, 4000);
+  });
+
   function handleMessage(data) {
     //console.log(data.get("message"))
-    const message = data.get("message")
-  //const suggestIndex = data.get("suggestIndex")
-  /*  setTimeout(() => {
-      useMessage({ msgArea, message: "Working on it...", type: "bot" });
-    }, 2500);
-    */
-    sgg.clearChildren()
-    
-    if(message.startsWith("data:")){
-     const img = createNode("img",{
-       attributes:{
-         src:message,
-         width:200,
-         height:200,
-         alt:"attachment",
-       }
-     })
-     img.setCss("mb-5")
-    msgArea.appendChild(img)
-     img.scrollIntoView()
-    setTimeout(()=>useMessage({ msgArea, message:"Working on it...", type: "bot"}),2500);
-    return;
+    const message = data?.get("message");
+    if (!message) return;
+    sgg.clearChildren();
+
+    if (message.startsWith("data:")) {
+      const img = msgArea.nextNode(null,"img", {
+          src: message,
+          width: 200,
+          height: 200,
+          alt: "attachment",
+      });
+     img.setCss(`mb-5 after:absolute after:content-[' '] after:w-[100%] after:h-[100%] after:top-0 after:bottom-0 after:right-0 after:left-0 after:bg-red-500 after:z-99 bg-blue-500 p-3`);
+      img.scrollIntoView();
+      setTimeout(
+        () => useMessage({ msgArea, message: "Working on it...", type: "bot" }),
+        2500
+      );
+      return;
     }
-    useMessage({ msgArea, message, type: "client"});
-  //  msgArea.scrollIntoView()
+    useMessage({ msgArea, message, type: "client" });
+    //  msgArea.scrollIntoView()
   }
-  
+
   function handlePickAttachment() {
     const file = createNode("input", {
-      attributes: [{
-        key: "type",
-        value: "file",
-      },{
-        key:"name",
-        value:"attachment",
-      }],
+      attributes: [
+        {
+          key: "type",
+          value: "file",
+        },
+        {
+          key: "name",
+          value: "attachment",
+        },
+      ],
     });
     file.click();
     file.addEventListener("change", (e) => {
-      const fr = new FileReader()
-      fr.readAsDataURL(e.target.files[0])
-     const map = new Map()
-     fr.onload = ()=>{
-       map.set("message",fr.result)
-   handleMessage(map)
-     }
+      const fr = new FileReader();
+      fr.readAsDataURL(e.target.files[0]);
+      const map = new Map();
+      fr.onload = () => {
+        map.set("message", fr.result);
+        handleMessage(map);
+      };
     });
   }
-function getSuggestedMessageAndResponses(bot,suggestIndex,msgArea, suggestionArea, useMessage){
-    //setTimeout(() => {
-      const message = bot.filter(b=>b.id === suggestIndex).at(0)
-      
-       useMessage({ msgArea,message:message.title, type: "bot" });
-       
-       sgg.clearChildren()
-       message.suggests.forEach((s)=>{
-      //console.log(s,i++)
-       useMessage({ msgArea:suggestionArea, message: s, type: "suggest"});
-       })
-       //bot.nextMessageIndex++
-      //messageTracker.index++;
-  //  }, 2500);
-}
- 
+  function getSuggestedMessageAndResponses(
+    bot,
+    suggestIndex,
+    msgArea,
+    suggestionArea,
+    useMessage
+  ) {
+    const message = bot.filter((b) => b.id === suggestIndex).at(0);
+    useMessage({ msgArea, message: message.title, type: "bot" });
+
+    sgg.clearChildren();
+    Object.values(message.suggests).forEach((s) => {
+      if(s){
+      useMessage({ msgArea: suggestionArea, message: s, type: "suggest" });
+      }
+    });
+    computer.doneTyping();
+  }
+
   function useMessage({
-    message = `Hi <b>${data.get("fullname").ucfirst()}</b>! My name is ${context?.config.appName}. What's up with you?`,
+    message = `Hi <b>${data?.get("fullname").ucfirst()}</b>! My name is ${
+      context?.config.appName
+    }. What's up with you?`,
     type = "bot",
     msgArea,
-   suggestionArea = null
+    suggestionArea = null,
   }) {
     let l, r, cl, cr;
+    const NOW = format(Date.now(), "p");
+    // console.log(NOW)
     const classes = {
-      bot: "!bg-slate-500 text-shadow-black/40 py-1 px-2 text-white rounded-lg text-base/7 inline-block",
-      client:
-        "!bg-blue-700 text-base/7 py-1 px-2 text-white rounded-lg inline-block self-right",
+      client: "!bg-blue-500 text-shadow-black/40 py-1 px-2 text-white rounded-lg text-base/7 inline-block",
+      bot:
+        `!bg-[#eeeeee]/60 text-base/7 py-1 px-2 !text-black/70 rounded-lg inline-block`,
       suggest:
-        "bg-white py-1 px-2 text-black rounded-lg text-smaller m-1 inline-block shadow-lg border-slate-300",
+        "!bg-white !text-black py-1 px-2 text-black rounded-lg text-smaller m-1 inline-block shadow-sm",
     };
-
     switch (type) {
       case "bot":
         // Bot
         l = msgArea.nextNode();
-        l.setCss("bg-transparent mb-5");
+        l.setCss("bg-transparent- mb-5");
         cl = l.nextNode(message, "p");
+        getDeliveryDate(cl,NOW)
         cl.setCss(classes.bot);
-        (suggestionArea && suggestionArea.nextNode("I will address you by this name.","span").setCss("text-center block bg-transparent text-blue-600 p-1 text-sm"))
-       // const map = new Map()
-       // map.set("message","bot is aking for name")
-       // map.set("givenName","")
-       // handleMessage(map)
         l.scrollIntoView();
         break;
       case "client":
         // client
         r = msgArea.nextNode();
-        r.setCss("bg-transparent mb-5 flex");
+        r.setCss("bg-transparent- mb-5 flex");
         cr = r.nextNode(message, "p");
+        getDeliveryDate(cr,NOW)
         cr.setCss(classes.client);
-  sgg.clearChildren()
-setTimeout(()=>{
-  getSuggestedMessageAndResponses(BOT,BOT_SUGGESTS.indexOf(message),msgArea,sgg,useMessage)
-    r.scrollIntoView();
-},2500)
+        sgg.clearChildren();
+        setTimeout(() => {
+          getSuggestedMessageAndResponses(
+            BOT,
+            +getIndex(BOT_SUGGESTS, message),
+            msgArea,
+            sgg,
+            useMessage
+          );
+          r.scrollIntoView();
+        }, 2500);
         break;
       case "suggest":
         // client
         r = msgArea.nextNode(message, "span");
         r.setCss(classes.suggest);
-//sgg.clearChildren()
-     //   r.scrollIntoView();
         r.addEventListener("click", function (e) {
           const m = new Map();
           m.set("message", message);
-        //  sgg.clearChildren()
-
-       //   if(suggestIndex) m.set("suggestIndex",suggestIndex)
+          computer.isTyping();
           handleMessage(m, e);
-          r.scrollIntoView()
+          r.scrollIntoView();
         });
         break;
     }
@@ -258,4 +229,25 @@ setTimeout(()=>{
   return showcase;
 };
 
+function getIndex(arr, pin) {
+  const r = {};
+  arr.map((obj) => {
+    Object.entries(obj).forEach(([key, value]) => {
+      if (value === pin) r["result"] = key;
+    });
+  });
+  return r.result;
+}
+function getDeliveryDate(c,t){
+ const statusDiv = c.nextNode()
+  .setCss(
+          "font-bold !text-black/50 text-xs pt-2 !bg-transparent text-shadow-black flex justify-between items-center space-x-5"
+        );
+ 
+  statusDiv.nextNode(t,"span")
+        getDeliveryStatus(statusDiv)
+}
+function getDeliveryStatus(c){
+  c.nextNode(null,"span").setCss("!text-green-500 !bg-transparent fa fa-check")
+}
 export default Index;

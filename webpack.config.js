@@ -1,20 +1,30 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./app.js",
   mode: "development",
+  entry: "./src/main.js",
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    //library: 'MyLibrary',
+   // libraryTarget: 'umd',
+  },
+  devServer: {
+    static: {
+      directory: path.resolve(__dirname,"dist"),
+    },
+    port: 3000,
+  //  open: true,
+    hot: true,
+    compress: true,
+  //  historyApiFallback: true,
+  },
   module: {
     rules: [
-   /*  
       {
-        test: /\.ts?$/,
-        use: "ts-loader",
-        exclude: /node_modules/,
-      },
-   {
         test: /\.css$/i,
-        use:["style-loader","css-loader"]
-      },*/
+        use: ["style-loader", "css-loader", "postcss-loader"],
+      },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: "asset/resource",
@@ -24,14 +34,5 @@ module.exports = {
   resolve: {
     extensions: [".js"],
   },
-  /*experiments:{
-    outputModule:true
-},*/
-  output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "dist"),
-   /* module:true,*/
-   // library:"Zuma",
-    /*clean:true*/
-  },
+  externals: ['.yarn','node_modules','.git']
 };

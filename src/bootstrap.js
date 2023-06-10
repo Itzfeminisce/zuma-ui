@@ -8,7 +8,7 @@ import {
 } from "./lib/utils.js";
 import EException from "./exception/EmbeddableException.js";
 
-export const createStyle = async (clb) => {
+export const createStyle = async () => {
   let dependencies;
   if ((dependencies = document.querySelectorAll(".dependency"))) {
     dependencies.forEach((d) => d.remove());
@@ -20,13 +20,13 @@ export const createStyle = async (clb) => {
       .then(() => fetchGoogleFonts())
       .then((d) => console.log(d));*/
     const res = await Promise.allSettled([
-      fetchTailwind(),
+     // fetchTailwind(),
       fetchFontAwesome(),
       fetchAnimateCss(),
       fetchGoogleFonts(),
-    ]);
-
-  return res.filter(i=>i.status === "fulfilled").length > 0
+    ])
+return res.filter(i=>i.status === "fulfilled").length > 0
+      
  // )
 
        /*.addEventListener("load", async (e)=>{
@@ -40,18 +40,21 @@ export const createStyle = async (clb) => {
     throw new EException(e);
   }
 };
-export const createLauncher = ({ pos, tw }) => {
+export const createLauncher = ({ pos, tw, config }) => {
+ // console.log(config)
   const btn = createNode("button");
   btn.type = "button";
-  const s = new Set([
-    `fixed`,
-    `${pos}`,
-    `p-5`,
-    `rounded-lg`,
+  const prefix = config.prefix
+  const y = [ 
+   ...pos.split(" "),
+    `${prefix}p-5`,
+    `${prefix}rounded-lg`,
     `fa fa-inbox`,
-    `text-2xl`,
-    `shadow-2xl`,
-  ]);
+    `${prefix}text-2xl`,
+    `${prefix}fixed`,
+    `${prefix}shadow-2xl`]
+  const s = new Set();
+  y.forEach(o=>s.add(o))
   if (tw?.trim()) {
     s.add(...tw?.trim()?.split(" "));
   }

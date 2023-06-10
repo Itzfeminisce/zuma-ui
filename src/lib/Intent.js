@@ -64,7 +64,7 @@ class Intent {
     }
     // ********* pre-rendered
     const frame = this.frame;
-    const nav = frame.nextNode(null, "div");
+    const nav = frame.nextNode();
 
     const goBack = nav.nextNode(null, "button");
     goBack.type = "button";

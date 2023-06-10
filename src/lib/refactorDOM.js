@@ -21,18 +21,45 @@ function DOM(config) {
     this.style.fontFamily = font;
     return this;
   };
+  /*
   HTMLElement.prototype.setCss = function (style) {
+    let classes = config.isDarkTheme
+      ? config["theme.dark"]
+      : config["theme.light"];
+    classes = [...style.split(" "), ...classes];
+    
+    classes = classes.map((c) => {
+      if (c.startsWith("fa")) return c;
+      return "zuma-" + c;
+    });
+    classes.forEach((_cssClass, i) => {
+      this.classList.add(`${_cssClass.trim()}`);
+    });
+ //   console.log(this.classList)
+
+    //this.classList = classList;
+    this.classList.add("animate__animated", `${config.animation}`);
+
+    this.addEventListener("animationend", function () {
+      this.classList.remove(`${config.animation}`);
+    });
+    return this;
+  };
+*/
+
+HTMLElement.prototype.setCss = function (style) {
     let classes = config.isDarkTheme
       ? config["theme.dark"]
       : config["theme.light"];
     classes = [...style.split(" "), ...classes];
     let classList = this.classList;
     classes.forEach((_cssClass, i) => {
-      classList.add(_cssClass.trim());
+      let cl = _cssClass.trim()
+    // if(!cl.startsWith("fa")) cl = "zm-"+cl
+      this.classList.add(cl);
     });
-    this.classList = classList;
+    //this.classList = classList;
     this.classList.add("animate__animated", `${config.animation}`);
-
     this.addEventListener("animationend", function () {
       this.classList.remove(`${config.animation}`);
     });
@@ -130,7 +157,7 @@ function DOM(config) {
           : "text"
       );
       label.appendChild(inputEl);
-         errF = document.createElement("p");
+      errF = document.createElement("p");
       if (input.errorField) {
         errF.textContent = input.errorField;
         label.appendChild(errF);

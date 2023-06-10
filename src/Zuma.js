@@ -11,7 +11,7 @@ import UserInfoCollectionForm from "./pages/UserInfoCollectionForm.js";
 class Zuma {
   #config;
   #pos = {
-    "top-left": "top-10 left-10",
+    "top-left": `top-10 left-10`,
     "top-right": "top-10 right-10",
     "bottom-left": "bottom-10 left-10",
     "bottom-right": "bottom-10 right-10",
@@ -21,22 +21,23 @@ class Zuma {
   #launcher;
   #launched = false; //= Intent.launched;
   constructor(launcher) {
-    this.#setLauncher(launcher);
+    this.launcher = launcher;
+  }
+  presets() {
+    this.#setLauncher(this.launcher);
     this.setLauncherPosition("bottom-right");
   }
   refreshOnSchemeChange() {
-   // console.log("Scheme changed", this);
+    // console.log("Scheme changed", this);
     this?.intent.refresh(this?.intent);
   }
 
   setLauncherPosition(pos) {
     if (Object.keys(this.#pos).includes(pos)) {
-      this.#launcherPosition = this.#pos[pos];
-      return;
+      return (this.#launcherPosition = this.#pos[pos].split(" ").map(u=>`${this.getConfig().prefix}${u}`).join(" "))
     }
     if (Object.values(this.#pos).includes(pos)) {
-      this.#launcherPosition = pos;
-      return;
+      return (this.#launcherPosition = pos);
     }
     throw new Error("Invalid launcher position format detected: " + pos);
   }
@@ -75,32 +76,34 @@ class Zuma {
       }
     });
   }
-  setConfig(c){
-    this.#config = c
+  setConfig(c) {
+    this.#config = c;
   }
-  getConfig(){
-    return this.#config
+  getConfig() {
+    return this.#config;
   }
   #activate() {
     const { Activity } = new Intent().createActivity();
-    Activity.createChildren(UserInfoCollectionForm) //Index);
+    Activity.createChildren(UserInfoCollectionForm)
+      //Index, new Map().set("fullname", "Guest"));
     //this.intent = Activity;
   }
   run() {
-    createStyle().then((shouldStart) => {
-      this.#startActivity();
-      const btn = createLauncher({
-        pos: this.#launcherPosition,
-        tw: this.#launcherCustomStyling,
-      });
-      if (this.#launcher.childNodes.length > 0) {
-        this.#launcher.childNodes.forEach((el) => el.remove());
-      }
-      setTimeout(() => {
-        this.#launcher.appendChild(btn);
-      }, 1000);
-      useWindow().launcher = btn;
+       createStyle().then((shouldStart) => {
+    this.#startActivity();
+    const btn = createLauncher({
+      pos: this.#launcherPosition,
+      tw: this.#launcherCustomStyling,
+      config: this.getConfig(),
     });
+    if (this.#launcher.childNodes.length > 0) {
+      this.#launcher.childNodes.forEach((el) => el.remove());
+    }
+    setTimeout(async () => {
+      this.#launcher.appendChild(btn)
+    }, 2000);
+    useWindow().launcher = btn;
+     });
   }
 }
 
