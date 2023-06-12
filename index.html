@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zuma-ui documentation</title>
+
+    <link rel="stylesheet" href="./public/prism.css" />
+   <!--
+   <link rel="stylesheet" href="./public/app.min.css" />
+   -->
+  </head>
+
+  <body class="bg-blue-100">
+        <div id="zuma"></div>
+
+   <header class="bg-blue-500 p-5 text-white">
+      <nav class="flex justify-between items-center">
+        <a href="/" class="font-bold text-3xl prose">ZUMA</a>
+
+        <div class="space-x-4">
+          <a
+            href="https://github.com/Itzfeminisce/embeddable-chatbot/tree/main"
+            rel="nofollow noreferrer"
+            target="_blank"
+            >Documentation</a
+          >
+          <a
+            href="https://github.com/Itzfeminisce?tab=repositories"
+            rel="nofollow noreferrer"
+            target="_blank"
+            >Projects</a
+          >
+        </div>
+      </nav>
+    </header>
+
+    <section class="p-2">
+      <div class="my-3">
+        <h3 class="mb-5 text-2xl text-thin">Quick Start</h3>
+              <div class="my-3">
+                <h2 class="my-3 text-3xl text-bold">Installation</h2>
+
+        <p class="my-3">
+          Install our app by simply adding one of the following CDN to your app 
+        </p>
+      </div>
+      <div class="code line-3">
+        <p class="title">index.html</p>
+<pre><code class="language-html snippet p-2">&lt;script src="https://cdn.jsdelivr.net/npm/zuma-ui@latest"&gt;&lt;/script&gt;
+   // or 
+&lt;script src="unpkg.com/zuma@latest"&gt;&lt;/script&gt;</code></pre>
+      </div>
+
+
+        <h3 class="my-5 text-2xl text-thin">Integration</h3>
+        <p class="my-3">
+          We will need your consent to inject our app into your page
+        </p>
+      </div>
+      <div class="code">
+        <p class="title">index.html</p>
+<pre><code class="language-html snippet line-2">&lt;div id="zuma"&gt;&lt;/div&gt;</code></pre>
+      </div>
+     
+     
+ <h3 class="my-5 text-2xl text-thin">Instantiation</h3>
+
+    <p class="my-3">Our app is now available for access on window.Zuma as function. We can now safely call the function and pass our recently created launcher in <code>index.html</code> </p>
+    
+    
+      <div class="code line-4">
+        <p class="title">script.js</p>
+ <pre><code class="language-js snippet">window.addEventListener("load", () => {
+  const launcher = document.getElementById("zuma");
+ try {
+    const launcher = document.getElementById("zuma")
+    const engine = Zuma(launcher);
+    engine.startApp();
+ } catch (e) {
+   // Handle error
+ }
+});</code></pre>
+      </div>
+      
+      
+   <h3 class="my-5 text-2xl text-thin">Result</h3>
+    <p class="my-3">You can now refresh your page. If all things go well, you should see a floating button at the bottom-left corner of your page. Viola!</p>
+    
+    
+    
+            <h3 class="mb-5 text-2xl text-thin">Learn More</h3>
+    <p class="my-3">Our app is easily customizable to suit your desire.
+    <a href="/docs.html" class="text-blue-500 underline text-bold">Proceed to advanced</a> section to dig deeper.</p>
+    
+    
+    
+    </section>
+<!--
+    <script src="https://cdn.jsdelivr.net/npm/zuma-ui@5.0.2"></script>
+    <script>
+      Zuma(document.getElementById("zuma")).startApp();
+    </script>
+    -->
+    <script src="./public/prism.js"></script>
+ <script src="./dist/bundle.js"></script>
+ <script type="module" src="./app.js"></script>
+
+  </body>
+</html>
