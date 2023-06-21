@@ -97,19 +97,12 @@
       </p>
     </section>
 
-    <script defer src="./dist/bundle.js"></script>
     <script src="./prism.js"></script>
-    <script type="module">
-    const {default:App} = Zuma
-      window.addEventListener("load", () => {
-        const launcher = document.getElementById("zuma");
-        try {
-          const engine = App(launcher);
-          engine.startApp();
-        } catch (e) {
-          //console.log(e);
-        }
-      });
-    </script>
+
+    <script defer src="./dist/bundle.js"></script>
+    <script src="./app.js"></script>
+    <!--
+    
+    -->
   </body>
 </html>

@@ -1,6 +1,3 @@
 .yarn
 .pnp.cjs
 .pnp.loader.mjs
-./index.html
-app.js
-public/dist/*

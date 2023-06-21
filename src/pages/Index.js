@@ -5,9 +5,10 @@ import Intent from "../lib/Intent.js";
 //let config = JSON.parse(window.localStorage.getItem("clientConfig"))
 //import config from "../config.js";
 import BgImage from "../files/bg.png";
-import { createNode, writeStatus } from "../lib/common.js";
+import { createNode, writeStatus, urlExtract, copyToClipboard, redirectTo} from "../lib/common.js";
 import { color } from "../lib/utils.js";
 
+//extractUrl('GOTO:https://foo.bar')
 const Index = function ({ frame, context, data }) {
   const BOT = context?.config?.CHATS;
   const BOT_SUGGESTS = BOT.map((b) => b.suggests || []);
@@ -98,9 +99,21 @@ const Index = function ({ frame, context, data }) {
   function handleMessage(data) {
     //console.log(data.get("message"))
     const message = data?.get("message");
-    if (!message) return;
+    
+    if (!message) return computer.doneTyping();
+    
     sgg.clearChildren();
-
+    
+   if(message.toLowerCase().includes('copy:')){
+     useMessage({ msgArea:sgg, message:"<i class='text-xs text-green-500'>COPIED!</i>", type: "suggest" });
+     computer.doneTyping()
+   return copyToClipboard(urlExtract(message))
+   }
+   
+   if(message?.toLowerCase()?.includes('goto:')){
+    return redirectTo(urlExtract(message))
+   }
+   
     if (message.startsWith("data:")) {
       const img = msgArea.nextNode(null,"img", {
           src: message,
@@ -177,7 +190,7 @@ const Index = function ({ frame, context, data }) {
     const classes = {
       client: "!bg-blue-500 text-shadow-black/40 py-1 px-2 text-white rounded-lg text-base/7 inline-block",
       bot:
-        `!bg-[#eeeeee]/60 text-base/7 py-1 px-2 !text-black/70 rounded-lg inline-block`,
+        `!bg-[#eeeeee] text-base/7 py-1 px-2 !text-black rounded-lg inline-block`,
       suggest:
         "!bg-white !text-black py-1 px-2 text-black rounded-lg text-smaller m-1 inline-block shadow-sm",
     };

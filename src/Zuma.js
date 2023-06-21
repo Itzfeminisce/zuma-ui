@@ -4,8 +4,8 @@ import { createLauncher, createStyle } from "./bootstrap.js";
 
 import { isFunc, isString, isHtmlElement, hasProp } from "./lib/common.js";
 import { useWindow } from "./lib/hooks.js";
-//import Index from "./pages/Index.js";
-import UserInfoCollectionForm from "./pages/UserInfoCollectionForm.js";
+import Index from "./pages/Index.js";
+//import UserInfoCollectionForm from "./pages/UserInfoCollectionForm.js";
 //import GetStarted from "./pages/GetStarted.js";
 
 class Zuma {
@@ -84,8 +84,9 @@ class Zuma {
   }
   #activate() {
     const { Activity } = new Intent().createActivity();
-    Activity.createChildren(UserInfoCollectionForm)
-      //Index, new Map().set("fullname", "Guest"));
+    Activity.createChildren(
+      //Index)
+      Index, new Map().set("fullname", "Guest"));
     //this.intent = Activity;
   }
   run() {

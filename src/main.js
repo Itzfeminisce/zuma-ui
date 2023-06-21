@@ -1,11 +1,24 @@
 "use strict";
+const axios = require('axios')
 import DOM from "./lib/refactorDOM.js";
 import Zuma from "./Zuma.js";
 import ConfigAssistance from "./ConfigAssistance.js";
 import chats from "./chats.js";
 import "./assets/app.css"
+import {useCsrfToken} from './lib/hooks.js'
 //import BOT from "./BOT.js";
 const App = (launcher, config, botConversations = chats) => {
+  const a = axios({
+    method:"POST",
+    data:{foo:"Var"},
+    url:"http://localhost:8000/api/ticket/",
+    headers:{
+      "X-CSRFToken":useCsrfToken(),
+      "Content-Type":"application/json"
+    }
+  }).then(a=>{
+    console.log("Axios: ",a)
+  })
  // if(window.tailwind && "config" in window.config.tailwind){
  // }
   const zuma = new Zuma(launcher);
@@ -29,16 +42,5 @@ const App = (launcher, config, botConversations = chats) => {
   DOM(e.getConfig());
   return e;
 };
-/*
-Object.defineProperties(App,{
-  name:{
-    get:()=>"Zuma"
-  },
-  getConfig:{
-    get:()=>Object.seal(ConfigAssistance),
-  }
-})
-*/
-//window[e.appName] = (window[e.appName] || "Zuma") = App;
-window.Zuma = window.Zuma || App
+//window.Zuma = window.Zuma || App
 export default App;

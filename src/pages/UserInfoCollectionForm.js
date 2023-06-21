@@ -1,7 +1,7 @@
 "use strict";
 import { color } from "../lib/utils.js";
 import Intent from "../lib/Intent.js";
-
+import {useCsrfToken, useXhr} from "../lib/hooks.js"
 const EnquiryForm = function ({ frame, context }) {
   frame
     .nextNode("Please fill this form before proceeding.")
@@ -61,5 +61,18 @@ if(!(formData.get("fullname").trim())) return (username.errorField.innerHTML = "
  // context.removeFooter();
   return form;
 };
+
+async function storeUser(data){
+         const res = await useXhr({
+           url:"/api/ticket/",
+           method:"POST",
+           data
+         })
+       //  console.log("Axios: ",res)
+      /*   if(!res.ok) throw new Error("Unable to save user data")
+         const json = res.json()
+         console.log(json)*/
+         return res
+}
 
 export default EnquiryForm;

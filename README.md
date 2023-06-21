@@ -4,19 +4,35 @@
 
 #### Installation:
 
+
 [https://cdn.jsdelivr.net/npm/zuma-ui@latest](https://cdn.jsdelivr.net/npm/zuma-ui@latest)
 
-[https://unpkg com/zuma-ui@latest](unpkg.com/zuma@latest)
+[https://unpkg.com/zuma-ui@latest](unpkg.com/zuma@latest)
 
-#### Active Version: 5.0.2
+`<script src='...'></script>`
 
-### Usage:
+#### Active Version: 6.0.9
+
+### Getting Started 
+Clone this repo
+```git clone https://github.com/Itzfeminisce/embeddable-chatbot.git
+
+yarn install
+
+yarn build
+```
+
+If you have live-server installed
+Run `live-server --file-path=public`
+Otherwise, Open file directly in browser.
+
+
+### Configurations:
 
 ```js
 // zuma-ui.config.js
 
 const config = {
-  animation: "animate__fadeIn",
   appName: "Your App name without space",
   file: "zuma-ui.config.js",
   fonts: {
@@ -50,6 +66,9 @@ const config = {
    */
   launcher: {
     // position:"top-right"
+    // position:"top-left"
+    // position:"bottom-right"
+    // position:"bottom-left"
   },
   onOpen: (next, launcher) => {
     /**
@@ -100,7 +119,7 @@ window.addEventListener("load", () => {
 
 ```
 
-### A sample of our conversation format must follow the following
+### Bot Conversation Set
 
 ```js
 const BOT = [
