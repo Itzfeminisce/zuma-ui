@@ -4,7 +4,7 @@
   "description": "A JavaScript powered embeddable chatbot for business - customer interaction",
   "main": "./public/dist/bundle.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack --watch"
   },
   "repository": {
     "type": "git",

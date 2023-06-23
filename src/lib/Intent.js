@@ -77,9 +77,11 @@ class Intent {
     nav.setCss("flex justify-between items-center bg-transparent");
 
     links?.map((link) => {
-      let clickable = c.nextNode(`${link?.url}`, `button`);
+      let clickable = c.nextNode(null, `button`);
+      //let clickable = c.nextNode(`${link?.url}`, `button`);
       clickable.type = "button";
-      clickable.setCss("font-normal p-2 rounded-full bg-transparent");
+      clickable.setCss("font-normal p-2 rounded-full bg-transparent fa fa-ellipsis");
+    //  clickable.setCss("font-normal p-2 rounded-full bg-transparent");
       clickable.addEventListener(
         "click",
         link?.callback ||
@@ -119,10 +121,11 @@ class Intent {
     this.frame = createNode("div");
  
     this.frame.setCss(
-      `fixed w-full h-full top-0 left-0 right-0 bottom-0 p-5 overflow-auto`
+      `fixed w-full h-full top-0 left-0 right-0 bottom-0 p-5 overflow-auto z-[9999]`
     );
     this.createId();
-    this.setNavigationLinks([{ url: "APIs" }, { url: "Login" }]);
+    this.setNavigationLinks([{ url: "APIs" }, //{ url: "Login" }
+    ]);
     this.config = this.#getClientConfig()
     this.next();
     return { Activity: this, frame: this.frame };

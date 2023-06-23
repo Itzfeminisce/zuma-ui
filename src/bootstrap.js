@@ -48,7 +48,8 @@ export const createLauncher = ({ pos, tw, config }) => {
   const y = [ 
    ...pos.split(" "),
     `${prefix}p-5`,
-    `${prefix}rounded-lg`,
+    `${prefix}z-2`,
+    `${prefix}rounded-full`,
     `fa fa-inbox`,
     `${prefix}text-2xl`,
     `${prefix}fixed`,

@@ -34,7 +34,10 @@ class Zuma {
 
   setLauncherPosition(pos) {
     if (Object.keys(this.#pos).includes(pos)) {
-      return (this.#launcherPosition = this.#pos[pos].split(" ").map(u=>`${this.getConfig().prefix}${u}`).join(" "))
+      return (this.#launcherPosition = this.#pos[pos]
+        .split(" ")
+        .map((u) => `${this.getConfig().prefix}${u}`)
+        .join(" "));
     }
     if (Object.values(this.#pos).includes(pos)) {
       return (this.#launcherPosition = pos);
@@ -56,6 +59,18 @@ class Zuma {
     if (!isHtmlElement(launcher)) {
       throw new Error("launcher must be of type HTMLElement");
     }
+    launcher.classList.add("z-10");
+    launcher.classList.add("fixed");
+    launcher.classList.add("flex");
+    launcher.classList.add("bg-red-500");
+    launcher.classList.add("justify-start");
+    launcher.classList.add("items-center");
+   // launcher.classList.add("h-[100px]");
+    launcher.classList.add("w-[100%]");
+    launcher.classList.add("max-w-[80%]");
+    launcher.classList.add("bottom-10");
+    launcher.classList.add("right-10");
+    // launcher.style.position="relative"
     this.#launcher = launcher;
   }
 
@@ -86,25 +101,34 @@ class Zuma {
     const { Activity } = new Intent().createActivity();
     Activity.createChildren(
       //Index)
-      Index, new Map().set("fullname", "Guest"));
+      Index,
+      new Map().set("fullname", "Guest")
+    );
     //this.intent = Activity;
   }
+  createPopover(container) {
+    setTimeout(() => {
+      const popover = container.nextNode("Hi, Need some help?");
+      popover.setCss("absolute w-auto p-2 bg-white rounded-lg right-20 bottom-2 animate-");
+    }, 2500);
+  }
   run() {
-       createStyle().then((shouldStart) => {
-    this.#startActivity();
-    const btn = createLauncher({
-      pos: this.#launcherPosition,
-      tw: this.#launcherCustomStyling,
-      config: this.getConfig(),
+    createStyle().then((shouldStart) => {
+      this.#startActivity();
+      const btn = createLauncher({
+        pos: this.#launcherPosition,
+        tw: this.#launcherCustomStyling,
+        config: this.getConfig(),
+      });
+      if (this.#launcher.childNodes.length > 0) {
+        // this.#launcher.childNodes.forEach((el) => el.remove());
+      }
+      setTimeout(async () => {
+        this.#launcher.appendChild(btn);
+        this.createPopover(this.#launcher);
+      }, 2000);
+      useWindow().launcher = btn;
     });
-    if (this.#launcher.childNodes.length > 0) {
-      this.#launcher.childNodes.forEach((el) => el.remove());
-    }
-    setTimeout(async () => {
-      this.#launcher.appendChild(btn)
-    }, 2000);
-    useWindow().launcher = btn;
-     });
   }
 }
 

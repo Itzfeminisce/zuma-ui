@@ -1,5 +1,7 @@
-//import axios from "axios";
+import messageSentSound from "../assets/sounds/send.mp3";
+import messageReceiptSound from "../assets/sounds/receive.wav";
 const axios = require('axios')
+
 const config = JSON.parse(window.localStorage.getItem("clientConfig"));
 
 export { useState, useSetInterval } from "../lib/IntentManager.js";
@@ -56,3 +58,15 @@ export const useXhr = async ({ url, data, method = "GET" }) => {
   return res
 };
 
+export const useSound=()=>{
+  let sound = {
+    SENT:messageSentSound,
+    RECEIVED:messageReceiptSound
+  }
+  function setSound(t){
+  const audio = new Audio(t)
+  audio.volume = 0.35
+  audio.play()
+  }
+  return [sound, setSound]
+}

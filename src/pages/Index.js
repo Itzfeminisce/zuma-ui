@@ -7,12 +7,13 @@ import Intent from "../lib/Intent.js";
 import BgImage from "../files/bg.png";
 import { createNode, writeStatus, urlExtract, copyToClipboard, redirectTo} from "../lib/common.js";
 import { color } from "../lib/utils.js";
+import { useSound } from "../lib/hooks.js";
 
 //extractUrl('GOTO:https://foo.bar')
 const Index = function ({ frame, context, data }) {
   const BOT = context?.config?.CHATS;
   const BOT_SUGGESTS = BOT.map((b) => b.suggests || []);
-
+const [sound, setSound] = useSound()
 
   frame.setCss("z-2 user-select-none");
 
@@ -83,7 +84,6 @@ const Index = function ({ frame, context, data }) {
   // The furst time submitting a message
   handleBeginMessage((data, e) => {
     handleMessage(data);
-
     /*   sgg
       .nextNode(`${context?.config.appName} is typing...`)
       .setCss("--bg-transparent- font-small text-green-500 m-px");
@@ -197,6 +197,7 @@ const Index = function ({ frame, context, data }) {
     switch (type) {
       case "bot":
         // Bot
+setSound(sound.RECEIVED)
         l = msgArea.nextNode();
         l.setCss("bg-transparent- mb-5");
         cl = l.nextNode(message, "p");
@@ -206,6 +207,7 @@ const Index = function ({ frame, context, data }) {
         break;
       case "client":
         // client
+setSound(sound.SENT)
         r = msgArea.nextNode();
         r.setCss("bg-transparent- mb-5 flex");
         cr = r.nextNode(message, "p");
