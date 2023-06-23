@@ -4,7 +4,7 @@ import DOM from "./lib/refactorDOM.js";
 import Zuma from "./Zuma.js";
 import ConfigAssistance from "./ConfigAssistance.js";
 import chats from "./chats.js";
-import "./assets/css/app.css"
+import "./assets/app.css"
 import {useCsrfToken} from './lib/hooks.js'
 //import BOT from "./BOT.js";
 const App = (launcher, config, botConversations = chats) => {
