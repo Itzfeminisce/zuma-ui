@@ -11,7 +11,7 @@
 
 `<script src='...'></script>`
 
-#### Active Version: 6.0.10
+#### Active Version: 6.0.11
 
 ### Getting Started 
 Clone this repo

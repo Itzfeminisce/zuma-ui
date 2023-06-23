@@ -4,16 +4,16 @@ import Intent from "../lib/Intent.js";
 
 //let config = JSON.parse(window.localStorage.getItem("clientConfig"))
 //import config from "../config.js";
-import BgImage from "../files/bg.png";
+import BgImage from "../assets/files/bg.png";
 import { createNode, writeStatus, urlExtract, copyToClipboard, redirectTo} from "../lib/common.js";
 import { color } from "../lib/utils.js";
 import { useSound } from "../lib/hooks.js";
 
 //extractUrl('GOTO:https://foo.bar')
-const Index = function ({ frame, context, data }) {
+const Index = async function ({ frame, context, data }) {
   const BOT = context?.config?.CHATS;
   const BOT_SUGGESTS = BOT.map((b) => b.suggests || []);
-const [sound, setSound] = useSound()
+const [sound, setSound] = await useSound()
 
   frame.setCss("z-2 user-select-none");
 

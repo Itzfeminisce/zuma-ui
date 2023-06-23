@@ -1,5 +1,4 @@
-import messageSentSound from "../assets/sounds/send.mp3";
-import messageReceiptSound from "../assets/sounds/receive.wav";
+
 const axios = require('axios')
 
 const config = JSON.parse(window.localStorage.getItem("clientConfig"));
@@ -58,7 +57,11 @@ export const useXhr = async ({ url, data, method = "GET" }) => {
   return res
 };
 
-export const useSound=()=>{
+export const useSound = async ()=>{
+ const {default: messageReceiptSound } = await import(/* webpackPrefetch: true */ "../assets/files/receive.mp3");
+ const {default: messageSentSound } = await import(/* webpackPrefetch: true */ "../assets/files/send.mp3");
+ 
+  
   let sound = {
     SENT:messageSentSound,
     RECEIVED:messageReceiptSound

@@ -7,8 +7,8 @@ import { useWindow, useSound } from "./lib/hooks.js";
 import Index from "./pages/Index.js";
 //import UserInfoCollectionForm from "./pages/UserInfoCollectionForm.js";
 //import GetStarted from "./pages/GetStarted.js";
-const [sound, setSound] = useSound()
 class Zuma {
+#soundSet = null //useSound()
   #config;
   #pos = {
     "top-left": `top-10 left-10`,
@@ -22,6 +22,10 @@ class Zuma {
   #launched = false; //= Intent.launched;
   constructor(launcher) {
     this.launcher = launcher;
+    this.#prepareMedia()
+  }
+  async #prepareMedia(){
+    this.#soundSet = await useSound()
   }
   presets() {
     this.#setLauncher(this.launcher);
@@ -74,8 +78,9 @@ class Zuma {
     this.#launcher = launcher;
   }
 
-  #startActivity() {
-    this.#launcher.addEventListener("click", () => {
+  #startActivity(btn) {
+   // this.#launcher.
+    btn?.addEventListener("click", () => {
       const app = useWindow();
       app.onOpen = this?.onOpen;
       app.onClose = this?.onClose;
@@ -109,26 +114,26 @@ class Zuma {
   createPopover(container) {
     setTimeout(() => {
       const popover = container.nextNode("Hi, Need some help?");
-      setSound(sound.RECEIVED)
-      popover.setCss("absolute w-auto p-2 bg-white !text-slate-500 rounded-lg right-20 bottom-2");
-      
-      setTimeout(()=>container.removeChild(popover),4000)
+      this.#soundSet[1](this.#soundSet[0].RECEIVED)
+      popover.setCss("absolute w-auto p-2 !bg-white !text-slate-500 rounded-lg right-20 bottom-2");
+      const popOverBtn = popover.nextNode(null, "button").setCss("fa fa-times !text-black p-2 !bg-inherit absolute -top-5 -left-5 rounded-full")
+      popOverBtn.addEventListener("click",()=>{
+        popover.remove()
+      },false)
+      setTimeout(()=>popover.remove(),30000)
     }, 2500);
   }
   run() {
     createStyle().then((shouldStart) => {
-      this.#startActivity();
       const btn = createLauncher({
         pos: this.#launcherPosition,
         tw: this.#launcherCustomStyling,
         config: this.getConfig(),
       });
-      if (this.#launcher.childNodes.length > 0) {
-        // this.#launcher.childNodes.forEach((el) => el.remove());
-      }
       setTimeout(async () => {
         this.#launcher.appendChild(btn);
         this.createPopover(this.#launcher);
+      this.#startActivity(btn);
       }, 2000);
       useWindow().launcher = btn;
     });
