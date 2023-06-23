@@ -109,7 +109,7 @@ class Zuma {
   createPopover(container) {
     setTimeout(() => {
       const popover = container.nextNode("Hi, Need some help?");
-      popover.setCss("absolute w-auto p-2 bg-white rounded-lg right-20 bottom-2 animate-");
+      popover.setCss("absolute w-auto p-2 bg-white text-slate-500 rounded-lg right-20 bottom-2 animate-");
     }, 2500);
   }
   run() {
