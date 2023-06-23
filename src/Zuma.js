@@ -3,11 +3,11 @@ import Intent from "./lib/Intent.js";
 import { createLauncher, createStyle } from "./bootstrap.js";
 
 import { isFunc, isString, isHtmlElement, hasProp } from "./lib/common.js";
-import { useWindow } from "./lib/hooks.js";
+import { useWindow, useSound } from "./lib/hooks.js";
 import Index from "./pages/Index.js";
 //import UserInfoCollectionForm from "./pages/UserInfoCollectionForm.js";
 //import GetStarted from "./pages/GetStarted.js";
-
+const [sound, setSound] = useSound()
 class Zuma {
   #config;
   #pos = {
@@ -109,7 +109,10 @@ class Zuma {
   createPopover(container) {
     setTimeout(() => {
       const popover = container.nextNode("Hi, Need some help?");
-      popover.setCss("absolute w-auto p-2 bg-white !text-slate-500 rounded-lg right-20 bottom-2 animate-");
+      setSound(sound.RECEIVED)
+      popover.setCss("absolute w-auto p-2 bg-white !text-slate-500 rounded-lg right-20 bottom-2");
+      
+      setTimeout(()=>container.removeChild(popover),4000)
     }, 2500);
   }
   run() {
